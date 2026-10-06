@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>아이키 다운로드</title>
+<meta name="description" content="우리 아이 키·몸무게 백분위를 기록하는 앱, 아이키를 받으세요.">
+<meta property="og:title" content="아이키 다운로드">
+<meta property="og:description" content="우리 아이, 또래보다 얼마나 클까요? 키·몸무게 백분위를 확인해요.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="아이키">
+<meta property="og:url" content="https://ikey.rapa.world/download/">
+<meta property="og:image" content="https://ikey.rapa.world/download/og.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="500">
+<meta property="og:image:alt" content="우리 아이, 또래보다 얼마나 클까요? — 아이키">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ikey.rapa.world/download/">
+<link rel="icon" href="../img/icon.png">
+<script>
+// QR·공유 링크 — 기기에 맞는 스토어로 바로 보낸다. 판별이 안 되면(PC 등) 아래 버튼을 보여 준다.
+(function () {
+  var ua = navigator.userAgent || "";
+  var isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/i.test(ua);
+  var target = isIOS ? "https://apps.apple.com/kr/app/id6818048443"
+    : (isAndroid ? "https://play.google.com/store/apps/details?id=com.ikey.ikey&referrer=utm_source%3Dqr%26utm_medium%3Ddownload" : null);
+  if (target) {
+    document.documentElement.className = "redirecting";
+    window.location.replace(target);
+  }
+})();
+</script>
+<style>
+  :root { --bg: #f6f8ef; --ink: #1d231d; --muted: #66705f; --btn: #1d231d; --btn-ink: #fff; --line: #dbe2cf; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #171a17; --ink: #e8eee3; --muted: #9aa494; --btn: #e8eee3; --btn-ink: #171a17; --line: #343c31; }
+  }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--ink);
+         font: 16px/1.6 -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+         word-break: keep-all; text-align: center; }
+  main { padding: 32px 20px; max-width: 420px; }
+  .icon { width: 96px; height: 96px; border-radius: 22px; margin: 0 auto 16px; display: block; }
+  h1 { margin: 0 0 6px; font-size: 26px; }
+  p { margin: 0 0 8px; color: var(--muted); }
+  .status { display: none; }
+  .redirecting .status { display: block; }
+  .stores { display: grid; gap: 10px; margin: 22px 0 18px; }
+  .stores a { display: block; padding: 14px; border-radius: 14px; background: var(--btn); color: var(--btn-ink);
+              text-decoration: none; font-weight: 700; }
+  .stores a.alt { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+  .note { font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <img class="icon" src="../img/icon.png" alt="">
+  <h1>아이키</h1>
+  <p>우리 아이 키·몸무게 백분위를 기록해요.</p>
+  <p class="status">스토어로 이동하고 있어요. 안 넘어가면 아래 버튼을 눌러 주세요.</p>
+  <nav class="stores" aria-label="스토어 선택">
+    <a href="https://apps.apple.com/kr/app/id6818048443">App Store에서 받기</a>
+    <a class="alt" href="https://play.google.com/store/apps/details?id=com.ikey.ikey&amp;referrer=utm_source%3Dqr%26utm_medium%3Ddownload">Google Play에서 받기</a>
+  </nav>
+  <p class="note"><a href="../">아이키 소개 보기</a></p>
+</main>
+</body>
+</html>

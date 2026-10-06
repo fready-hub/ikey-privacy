@@ -2,42 +2,259 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>아이키(iKey)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>아이키 — 우리 아이 키·몸무게 백분위 기록</title>
+<meta name="description" content="질병관리청 성장도표를 기준으로 우리 아이의 키·몸무게가 또래 100명 중 몇 번째인지 쉬운 말로 알려 드려요. 성장 그래프로 변화를 보고, 여러 자녀를 따로 기록해요. 회원가입 없이 기기 안에만 저장돼요.">
+<meta name="theme-color" content="#f6f8ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171a17" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://ikey.rapa.world/">
+<link rel="icon" href="img/icon.png">
+<link rel="apple-touch-icon" href="img/icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="아이키">
+<meta property="og:title" content="아이키 — 우리 아이, 또래보다 얼마나 클까요?">
+<meta property="og:description" content="질병관리청 성장도표로 키·몸무게 백분위를 확인하고 성장 그래프로 변화를 봐요.">
+<meta property="og:url" content="https://ikey.rapa.world/">
+<meta property="og:image" content="https://ikey.rapa.world/download/og.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="500">
+<meta property="og:image:alt" content="우리 아이, 또래보다 얼마나 클까요? — 아이키">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "아이키",
+  "alternateName": "아이키-자녀별 성장발달 관리",
+  "operatingSystem": "Android, iOS",
+  "applicationCategory": "HealthApplication",
+  "description": "질병관리청 성장도표 기준으로 아이의 키·몸무게 백분위와 성장 추이를 기록하는 앱",
+  "url": "https://ikey.rapa.world/",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+}
+</script>
 <style>
-  :root { color-scheme: light dark; }
-  body { font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-         line-height: 1.7; max-width: 760px; margin: 0 auto; padding: 24px 18px 64px; color: #1c1c1e; }
-  h1 { font-size: 1.6rem; margin-bottom: 4px; }
-  h2 { font-size: 1.15rem; margin-top: 32px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
-  .lead { color: #666; font-size: .95rem; margin-bottom: 28px; }
-  ul.links { padding-left: 20px; }
-  ul.links li { margin: 10px 0; font-size: 1.05rem; }
-  a { color: #0a7cff; }
-  footer { margin-top: 40px; color: #888; font-size: .85rem; }
+  :root {
+    --bg: #f6f8ef; --card: #fffffa; --ink: #1d231d; --muted: #66705f;
+    --line: #dbe2cf; --green: #2f8f5a; --green-soft: #def3e5; --brand: #46bd7b;
+    --sun: #fdfbb8; --btn: #1d231d; --btn-ink: #fff;
+  }
   @media (prefers-color-scheme: dark) {
-    body { color: #e6e6e6; background: #111; }
-    h2 { border-color: #333; } .lead, footer { color: #999; }
+    :root {
+      --bg: #171a17; --card: #20251f; --ink: #e8eee3; --muted: #9aa494;
+      --line: #343c31; --green: #7fd4a1; --green-soft: #213528; --brand: #46bd7b;
+      --sun: #3a3a22; --btn: #e8eee3; --btn-ink: #171a17;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.7 "Pretendard", -apple-system, "Apple SD Gothic Neo", "Segoe UI",
+          "Noto Sans KR", "Malgun Gothic", sans-serif;
+    word-break: keep-all; overflow-wrap: anywhere;
+  }
+  a { color: var(--green); }
+  img { max-width: 100%; height: auto; display: block; }
+  .wrap { max-width: 1040px; margin: 0 auto;
+          padding: 0 max(20px, env(safe-area-inset-left)) 0 max(20px, env(safe-area-inset-right)); }
+
+  header .wrap { display: flex; align-items: center; justify-content: space-between;
+                 padding-top: 18px; padding-bottom: 18px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800;
+           font-size: 18px; color: var(--ink); text-decoration: none; white-space: nowrap; }
+  .brand img { width: 36px; height: 36px; border-radius: 9px; }
+  header nav a { font-size: 14.5px; font-weight: 700; color: var(--ink); text-decoration: none;
+                 padding: 7px 14px; border-radius: 99px; border: 1.5px solid var(--ink); white-space: nowrap; }
+
+  /* 첫 화면 */
+  .hero .wrap { display: grid; gap: 40px; align-items: center;
+                grid-template-columns: 1fr; padding-top: 24px; padding-bottom: 56px; }
+  .eyebrow { display: inline-block; font-size: 13.5px; font-weight: 700; color: var(--green);
+             background: var(--green-soft); padding: 4px 12px; border-radius: 99px; margin: 0 0 18px; }
+  h1 { font-size: clamp(30px, 7.6vw, 50px); line-height: 1.25; letter-spacing: -0.03em; margin: 0 0 18px; }
+  h1 .hl { background: linear-gradient(transparent 62%, var(--sun) 62%); }
+  .lead { font-size: clamp(16px, 4.2vw, 18.5px); color: var(--muted); margin: 0 0 30px; max-width: 32em; }
+  .stores { display: flex; flex-wrap: wrap; gap: 12px; }
+  .stores a {
+    flex: 1 1 200px; max-width: 260px; display: flex; flex-direction: column;
+    padding: 13px 20px; border-radius: 14px; text-decoration: none;
+    background: var(--btn); color: var(--btn-ink); line-height: 1.3;
+  }
+  .stores a small { font-size: 12.5px; opacity: .72; }
+  .stores a b { font-size: 18px; }
+  .stores a:focus-visible, .guide:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+  .fine { font-size: 13.5px; color: var(--muted); margin: 14px 0 0; }
+
+  .phone { justify-self: center; width: min(100%, 300px); border-radius: 26px; overflow: hidden;
+           border: 1px solid var(--line); background: var(--card);
+           box-shadow: 0 18px 40px -18px rgba(0,0,0,.35); }
+
+  section { padding: 56px 0; }
+  section.alt { background: var(--card); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  h2 { font-size: clamp(24px, 5.6vw, 32px); letter-spacing: -0.02em; line-height: 1.35; margin: 0 0 10px; }
+  .sub { color: var(--muted); margin: 0 0 36px; }
+
+  /* 세 단계 */
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 36px;
+           grid-template-columns: 1fr; counter-reset: s; }
+  .steps li { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .steps h3 { font-size: 19px; line-height: 30px; margin: 0 0 6px; display: flex; gap: 10px; align-items: flex-start; }
+  .steps h3::before { counter-increment: s; content: counter(s); flex: none;
+                      width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+                      background: var(--btn); color: var(--btn-ink); font-size: 15px; }
+  .steps p { margin: 0; color: var(--muted); font-size: 15.5px; }
+  .shot { width: min(100%, 250px); aspect-ratio: 536 / 1000; border-radius: 18px; overflow: hidden;
+          border: 1px solid var(--line); background: var(--bg); box-shadow: 0 12px 28px -16px rgba(0,0,0,.3); }
+  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+  /* 기능 */
+  .features { display: grid; gap: 14px; grid-template-columns: 1fr; padding: 0; margin: 0; list-style: none; }
+  .features li { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+  .features b { display: block; font-size: 16.5px; margin-bottom: 2px; }
+  .features span { color: var(--muted); font-size: 15px; }
+
+  /* 기준 자료·참고 */
+  .note { margin-top: 28px; padding: 20px 22px; border-radius: 16px; background: var(--green-soft);
+          border: 1px solid var(--line); }
+  .note b { display: block; font-size: 16.5px; margin-bottom: 4px; }
+  .note p { margin: 0; color: var(--muted); font-size: 15px; }
+  .note p + p { margin-top: 8px; }
+
+  /* 설치 */
+  .install { display: grid; gap: 32px; align-items: center; grid-template-columns: 1fr; }
+  .qr { display: none; }
+  .qr figure { margin: 0; text-align: center; }
+  .qr img { width: 180px; height: 180px; border-radius: 14px; border: 1px solid var(--line);
+            background: #fff; margin: 0 auto; }
+  .qr figcaption { font-size: 13.5px; color: var(--muted); margin-top: 10px; }
+
+  footer { padding: 40px 0 calc(48px + env(safe-area-inset-bottom)); font-size: 13.5px; color: var(--muted); }
+  footer ul { list-style: none; padding: 0; margin: 0 0 18px; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  footer ul a { color: var(--ink); font-weight: 600; text-decoration: none; }
+  footer p { margin: 0 0 6px; }
+
+  @media (min-width: 760px) {
+    .hero .wrap { grid-template-columns: 1.25fr 1fr; padding-top: 40px; padding-bottom: 80px; }
+    .steps { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .features { grid-template-columns: repeat(2, 1fr); }
+    .install { grid-template-columns: 1fr auto; }
+    .qr { display: block; }
+  }
+  @media (max-width: 759px) {
+    .steps li { grid-template-columns: 1fr 42%; align-items: start; }
+    .steps li .shot { order: 2; }
   }
 </style>
 </head>
 <body>
-<h1>아이키(iKey)</h1>
-<div class="lead">질병관리청 성장도표 기준으로 아이의 키·몸무게 백분위와 성장 추이를 기록하는 안드로이드·iPhone 앱입니다.</div>
+<header>
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/icon.png" alt="" width="36" height="36">아이키</a>
+    <nav><a href="#install">앱 받기</a></nav>
+  </div>
+</header>
 
-<h2>문서</h2>
-<ul class="links">
-  <li><a href="privacy.html">개인정보처리방침</a></li>
-</ul>
+<main>
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">자녀 성장발달 기록</p>
+      <h1>우리 아이,<br><span class="hl">또래보다 얼마나 클까요?</span></h1>
+      <p class="lead">생년월일과 키·몸무게만 넣으면, 질병관리청 성장도표를 기준으로
+        또래 100명 중 몇 번째인지 쉬운 말로 알려 드려요. 기록이 쌓이면 성장 그래프로 변화를 한눈에 봐요.</p>
+      <div class="stores">
+        <a href="https://play.google.com/store/apps/details?id=com.ikey.ikey&amp;referrer=utm_source%3Dsite%26utm_medium%3Dlanding"><small>안드로이드</small><b>Google Play에서 받기</b></a>
+        <a href="https://apps.apple.com/kr/app/id6818048443"><small>아이폰</small><b>App Store에서 받기</b></a>
+      </div>
+      <p class="fine">무료 · 광고 포함 · 회원가입 없음</p>
+    </div>
+    <div class="phone">
+      <img src="img/hero.webp" alt="성장이력 화면 — 측정마다 키·몸무게와 백분위, 아래에 또래 중간값과 함께 그린 키·몸무게 성장 그래프" width="600" height="1304">
+    </div>
+  </div>
+</div>
 
-<h2>문의</h2>
-<p>앱에 문제가 있거나 개선 의견이 있으시면 <a href="mailto:fready.shin@gmail.com">fready.shin@gmail.com</a> 으로 알려주세요.</p>
+<section class="alt" id="how">
+  <div class="wrap">
+    <h2>세 단계면 충분해요</h2>
+    <p class="sub">병원에 가기 전에도, 집에서 잰 키로 바로 확인해요.</p>
+    <ol class="steps">
+      <li>
+        <div class="shot"><img src="img/step1.webp" alt="자녀관리 화면 — 성별·이름·생년월일을 넣고 자녀 등록, 아래에 등록된 두 자녀와 개월 수" width="536" height="1165" loading="lazy"></div>
+        <div>
+          <h3>아이를 등록해요</h3>
+          <p>이름(별칭)과 생년월일, 성별만 넣으면 돼요. 여러 자녀를 각각 등록해 따로 기록해요.</p>
+        </div>
+      </li>
+      <li>
+        <div class="shot"><img src="img/step2.webp" alt="측정정보입력 화면 — 자녀 선택, 키·몸무게·발 사이즈와 측정일 입력, 결과보기 버튼" width="536" height="1165" loading="lazy"></div>
+        <div>
+          <h3>키·몸무게를 넣어요</h3>
+          <p>지난 날짜에 잰 값도 측정일을 골라 넣으면 그날 나이 기준으로 계산해요. 발 사이즈는 원할 때만.</p>
+        </div>
+      </li>
+      <li>
+        <div class="shot"><img src="img/step3.webp" alt="측정결과 화면 — 신장 76.0%, 또래 100명 중 약 76명이 더 작아요, 체중 71.3%, 우리아이와 또래 중간 비교 막대 그래프" width="536" height="1165" loading="lazy"></div>
+        <div>
+          <h3>백분위를 확인해요</h3>
+          <p>“또래 100명 중 약 76명이 더 작아요”처럼 쉬운 말로 알려 드리고, 또래 중간값과 나란히 비교해요.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>그 밖에 이런 것도 해요</h2>
+    <p class="sub">기록이 쌓일수록 쓸모가 커져요.</p>
+    <ul class="features">
+      <li><b>성장 그래프</b><span>키·몸무게 변화를 또래 중간값(50백분위) 점선과 함께 그려요.</span></li>
+      <li><b>직전 대비 변화</b><span>지난번보다 얼마나 컸는지 ▲·▼로 바로 보여 드려요.</span></li>
+      <li><b>여러 자녀 관리</b><span>형제자매를 각각 등록해 아이별로 따로 기록해요.</span></li>
+      <li><b>기록 백업</b><span>기기 자동 백업에 더해, 파일로 내보내 두었다가 다시 가져올 수 있어요.</span></li>
+    </ul>
+    <div class="note">
+      <b>무엇을 기준으로 하나요?</b>
+      <p>36개월 미만은 WHO 성장 기준(WHO Growth Standards), 36개월 이상은 2017 소아·청소년 성장도표(질병관리청)를 써요. 만 0세(출생 시)부터 만 19세까지 지원해요.</p>
+      <p>백분위는 참고용 정보이며 의학적 진단을 대신하지 않아요. 걱정되는 점이 있다면 소아청소년과 전문의와 상담해 주세요.</p>
+    </div>
+    <p class="fine">아이 정보와 측정 기록은 회원가입 없이 사용하는 기기 안에만 저장되고, 서버로 보내지 않아요.
+      자세한 내용은 <a href="privacy.html">개인정보 처리방침</a>에 있어요.</p>
+  </div>
+</section>
+
+<section class="alt" id="install">
+  <div class="wrap install">
+    <div>
+      <h2>지금 받아 보세요</h2>
+      <p class="sub">오늘 잰 키부터 기록해 보세요.</p>
+      <div class="stores">
+        <a href="https://play.google.com/store/apps/details?id=com.ikey.ikey&amp;referrer=utm_source%3Dsite%26utm_medium%3Dlanding"><small>안드로이드</small><b>Google Play에서 받기</b></a>
+        <a href="https://apps.apple.com/kr/app/id6818048443"><small>아이폰</small><b>App Store에서 받기</b></a>
+      </div>
+    </div>
+    <div class="qr">
+      <figure>
+        <img src="download/qr.png" alt="설치 QR 코드" width="180" height="180" loading="lazy">
+        <figcaption>휴대폰 카메라로 찍으면<br>기기에 맞는 스토어로 가요</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+</main>
 
 <footer>
-아이키(iKey) · Android com.ikey.ikey · iOS world.rapa.ikey ·
-<a href="https://play.google.com/store/apps/details?id=com.ikey.ikey">Google Play</a> ·
-<a href="https://apps.apple.com/kr/app/id6818048443">App Store</a><br>
-<a href="https://rapa.world/">rapa.world 의 다른 서비스 보기</a>
+  <div class="wrap">
+    <ul>
+      <li><a href="privacy.html">개인정보 처리방침</a></li>
+      <li><a href="https://rapa.world/">rapa.world 의 다른 서비스 보기</a></li>
+    </ul>
+    <p>아이키는 질병관리청과 제휴 관계가 없는 독립 앱입니다. 성장 기준 자료는 공개된 성장도표를 따릅니다.</p>
+    <p>문의: <a href="mailto:fready.shin@gmail.com">fready.shin@gmail.com</a></p>
+    <p>Android com.ikey.ikey · iOS world.rapa.ikey</p>
+  </div>
 </footer>
 </body>
 </html>
