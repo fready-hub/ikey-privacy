@@ -19,12 +19,20 @@
 <link rel="icon" href="../img/icon.png">
 <script>
 // QR·공유 링크 — 기기에 맞는 스토어로 바로 보낸다. 판별이 안 되면(PC 등) 아래 버튼을 보여 준다.
+// ?from=blog|reel|shorts|qr → Play referrer 의 utm_source (GA4 firstUserSource 로 채널별 설치를 가른다). 모르는 값·없음은 qr.
 (function () {
+  var CHANNELS = ["blog", "reel", "shorts", "qr"];
+  var m = /[?&]from=([a-z]+)/.exec(location.search);
+  var from = m && CHANNELS.indexOf(m[1]) >= 0 ? m[1] : "qr";
+  var play = "https://play.google.com/store/apps/details?id=com.ikey.ikey&referrer=utm_source%3D" + from + "%26utm_medium%3Ddownload";
   var ua = navigator.userAgent || "";
   var isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   var isAndroid = /Android/i.test(ua);
-  var target = isIOS ? "https://apps.apple.com/kr/app/id6818048443"
-    : (isAndroid ? "https://play.google.com/store/apps/details?id=com.ikey.ikey&referrer=utm_source%3Dqr%26utm_medium%3Ddownload" : null);
+  var target = isIOS ? "https://apps.apple.com/kr/app/id6818048443" : (isAndroid ? play : null);
+  document.addEventListener("DOMContentLoaded", function () {
+    var a = document.getElementById("play-link");
+    if (a) a.href = play;
+  });
   if (target) {
     document.documentElement.className = "redirecting";
     window.location.replace(target);
@@ -60,7 +68,7 @@
   <p class="status">스토어로 이동하고 있어요. 안 넘어가면 아래 버튼을 눌러 주세요.</p>
   <nav class="stores" aria-label="스토어 선택">
     <a href="https://apps.apple.com/kr/app/id6818048443">App Store에서 받기</a>
-    <a class="alt" href="https://play.google.com/store/apps/details?id=com.ikey.ikey&amp;referrer=utm_source%3Dqr%26utm_medium%3Ddownload">Google Play에서 받기</a>
+    <a class="alt" id="play-link" href="https://play.google.com/store/apps/details?id=com.ikey.ikey&amp;referrer=utm_source%3Dqr%26utm_medium%3Ddownload">Google Play에서 받기</a>
   </nav>
   <p class="note"><a href="../">아이키 소개 보기</a></p>
 </main>
