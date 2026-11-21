@@ -19,9 +19,9 @@
 <link rel="icon" href="../img/icon.png">
 <script>
 // QR·공유 링크 — 기기에 맞는 스토어로 바로 보낸다. 판별이 안 되면(PC 등) 아래 버튼을 보여 준다.
-// ?from=blog|reel|shorts|qr → Play referrer 의 utm_source (GA4 firstUserSource 로 채널별 설치를 가른다). 모르는 값·없음은 qr.
+// ?from=blog|reel|shorts|clip|thread|qr → Play referrer 의 utm_source (GA4 firstUserSource 로 채널별 설치를 가른다). 모르는 값·없음은 qr.
 (function () {
-  var CHANNELS = ["blog", "reel", "shorts", "qr"];
+  var CHANNELS = ["blog", "reel", "shorts", "clip", "thread", "qr"];
   var m = /[?&]from=([a-z]+)/.exec(location.search);
   var from = m && CHANNELS.indexOf(m[1]) >= 0 ? m[1] : "qr";
   var play = "https://play.google.com/store/apps/details?id=com.ikey.ikey&referrer=utm_source%3D" + from + "%26utm_medium%3Ddownload";
